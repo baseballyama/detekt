@@ -57,8 +57,10 @@ fun createIssue(
 fun createRuleInstance(
     name: String = "TestSmell",
     ruleSetId: String = "RuleSet$name",
+    id: String = "${name}Id",
     description: String = "Description $name",
 ): Issue.RuleInstance = IssueImpl.RuleInstance(
+    id = id,
     name = Rule.Name(name),
     ruleSetId = RuleSet.Id(ruleSetId),
     description = description
@@ -122,6 +124,7 @@ private data class IssueImpl(
     override val references: List<Entity> = emptyList(),
 ) : Issue {
     data class RuleInstance(
+        override val id: String,
         override val name: Rule.Name,
         override val ruleSetId: RuleSet.Id,
         override val description: String,

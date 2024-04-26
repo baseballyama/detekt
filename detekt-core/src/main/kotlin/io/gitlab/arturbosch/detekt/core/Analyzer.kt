@@ -104,7 +104,7 @@ internal class Analyzer(
                     .filter { (_, config) -> config.shouldAnalyzeFile(file, settings.spec.projectSpec.basePath) }
                     .map { (ruleProvider, config) ->
                         val rule = ruleProvider(config)
-                        rule.toRuleInstance(ruleSet.id) to rule
+                        rule.toRuleInstance(rule.ruleName.value, ruleSet.id) to rule
                     }
             }
             .filterNot { (ruleInstance, rule) ->
@@ -174,8 +174,8 @@ private fun Finding.toIssue(rule: Issue.RuleInstance, severity: Severity): Issue
     }
 }
 
-private fun Rule.toRuleInstance(ruleSetId: RuleSet.Id): Issue.RuleInstance {
-    return IssueImpl.RuleInstance(ruleName, ruleSetId, description)
+private fun Rule.toRuleInstance(id: String, ruleSetId: RuleSet.Id): Issue.RuleInstance {
+    return IssueImpl.RuleInstance(id, ruleName, ruleSetId, description)
 }
 
 private data class IssueImpl(
@@ -187,6 +187,7 @@ private data class IssueImpl(
     override val autoCorrectEnabled: Boolean = false,
 ) : Issue {
     data class RuleInstance(
+        override val id: String,
         override val name: Rule.Name,
         override val ruleSetId: RuleSet.Id,
         override val description: String,
