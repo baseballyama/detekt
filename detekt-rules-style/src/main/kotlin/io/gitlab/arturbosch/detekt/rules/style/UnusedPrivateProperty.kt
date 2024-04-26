@@ -65,7 +65,7 @@ class UnusedPrivateProperty(config: Config) : Rule(
     "Property is unused and should be removed."
 ) {
 
-    override val defaultRuleIdAliases: Set<String> =
+    override val defaultRuleAliases: Set<String> =
         setOf("UNUSED_PARAMETER", "unused", "UnusedPrivateMember")
 
     @Configuration("unused property names matching this regex are ignored")

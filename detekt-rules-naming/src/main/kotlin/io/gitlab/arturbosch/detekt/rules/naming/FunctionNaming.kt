@@ -23,7 +23,7 @@ class FunctionNaming(config: Config) : Rule(
     "Function names should follow the naming convention set in the configuration."
 ) {
 
-    override val defaultRuleIdAliases: Set<String> = setOf("FunctionName")
+    override val defaultRuleAliases: Set<String> = setOf("FunctionName")
 
     @Configuration("naming pattern")
     private val functionPattern: Regex by config("[a-z][a-zA-Z0-9]*", String::toRegex)

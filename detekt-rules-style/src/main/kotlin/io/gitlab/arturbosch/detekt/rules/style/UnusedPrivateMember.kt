@@ -50,7 +50,7 @@ class UnusedPrivateMember(config: Config) : Rule(
     "Private function is unused and should be removed."
 ) {
 
-    override val defaultRuleIdAliases: Set<String> = setOf("UNUSED_VARIABLE", "UNUSED_PARAMETER", "unused")
+    override val defaultRuleAliases: Set<String> = setOf("UNUSED_VARIABLE", "UNUSED_PARAMETER", "unused")
 
     @Configuration("unused private function names matching this regex are ignored")
     private val allowedNames: Regex by config("", String::toRegex)

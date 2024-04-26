@@ -21,7 +21,7 @@ class InvalidPackageDeclaration(config: Config) : Rule(
     "Kotlin source files should be stored in the directory corresponding to its package statement."
 ) {
 
-    override val defaultRuleIdAliases: Set<String> = setOf("PackageDirectoryMismatch")
+    override val defaultRuleAliases: Set<String> = setOf("PackageDirectoryMismatch")
 
     @Configuration("if specified this part of the package structure is ignored")
     private val rootPackage: String by config("")

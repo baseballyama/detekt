@@ -113,7 +113,7 @@ internal class RuleVisitor(textReplacements: Map<String, String>) : DetektVisito
 
     private fun extractAliases(klass: KtClass) {
         val initializer = klass.getProperties()
-            .singleOrNull { it.name == "defaultRuleIdAliases" }
+            .singleOrNull { it.name == "defaultRuleAliases" }
             ?.initializer
         if (initializer != null) {
             aliases = (

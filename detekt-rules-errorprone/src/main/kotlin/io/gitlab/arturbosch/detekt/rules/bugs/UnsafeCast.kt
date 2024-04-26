@@ -35,7 +35,7 @@ class UnsafeCast(config: Config) : Rule(
     "Cast operator throws an exception if the cast is not possible."
 ) {
 
-    override val defaultRuleIdAliases: Set<String> = setOf("UNCHECKED_CAST")
+    override val defaultRuleAliases: Set<String> = setOf("UNCHECKED_CAST")
 
     override fun visitBinaryWithTypeRHSExpression(expression: KtBinaryExpressionWithTypeRHS) {
         if (bindingContext.diagnostics.forElement(expression.operationReference)

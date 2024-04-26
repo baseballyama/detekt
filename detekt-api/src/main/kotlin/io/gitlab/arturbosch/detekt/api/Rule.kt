@@ -24,25 +24,25 @@ open class Rule(
      *
      * By default, it is the name of the class name. Override to change it.
      */
-    open val ruleId: Id get() = Id(javaClass.simpleName)
+    open val ruleName: Name get() = Name(javaClass.simpleName)
 
     /**
      * List of rule ids which can optionally be used in suppress annotations to refer to this rule.
      */
-    val aliases: Set<String> get() = config.valueOrDefault("aliases", defaultRuleIdAliases.toList()).toSet()
+    val aliases: Set<String> get() = config.valueOrDefault("aliases", defaultRuleAliases.toList()).toSet()
 
     var bindingContext: BindingContext = BindingContext.EMPTY
     var compilerResources: CompilerResources? = null
 
     /**
-     * The default names which can be used instead of this [ruleId] to refer to this rule in suppression's.
+     * The default names which can be used instead of this [ruleName] to refer to this rule in suppression's.
      *
      * When overriding this property make sure to meet following structure for detekt-generator to pick
      * it up and generate documentation for aliases:
      *
-     *      override val defaultRuleIdAliases = setOf("Name1", "Name2")
+     *      override val defaultRuleAliases = setOf("Name1", "Name2")
      */
-    open val defaultRuleIdAliases: Set<String> = emptySet()
+    open val defaultRuleAliases: Set<String> = emptySet()
 
     val autoCorrect: Boolean
         get() = config.valueOrDefault(Config.AUTO_CORRECT_KEY, false) &&
@@ -104,7 +104,7 @@ open class Rule(
     }
 
     @Poko
-    class Id(val value: String) {
+    class Name(val value: String) {
         init {
             validateIdentifier(value)
         }

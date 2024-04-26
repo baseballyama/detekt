@@ -51,7 +51,7 @@ class SuspendFunWithCoroutineScopeReceiver(config: Config) : Rule(
         "use suspend functions without the receiver or use plain functions and use coroutineScope { } instead."
 ) {
 
-    override val defaultRuleIdAliases = setOf("SuspendFunctionOnCoroutineScope")
+    override val defaultRuleAliases = setOf("SuspendFunctionOnCoroutineScope")
 
     override fun visitNamedFunction(function: KtNamedFunction) {
         checkReceiver(function)

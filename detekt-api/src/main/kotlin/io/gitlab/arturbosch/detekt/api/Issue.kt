@@ -18,7 +18,7 @@ interface Issue {
         get() = entity.location
 
     interface RuleInstance {
-        val id: Rule.Id
+        val name: Rule.Name
         val ruleSetId: RuleSet.Id
         val description: String
     }
