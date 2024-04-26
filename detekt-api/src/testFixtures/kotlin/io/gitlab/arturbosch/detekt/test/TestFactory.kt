@@ -19,7 +19,7 @@ fun createIssue(
     severity: Severity = Severity.Error,
     autoCorrectEnabled: Boolean = false,
 ): Issue = createIssue(
-    ruleInfo = createRuleInfo(ruleName),
+    ruleInstance = createRuleInstance(ruleName),
     entity = entity,
     message = message,
     severity = severity,
@@ -27,13 +27,13 @@ fun createIssue(
 )
 
 fun createIssue(
-    ruleInfo: Issue.RuleInfo,
+    ruleInstance: Issue.RuleInstance,
     entity: Entity = createEntity(),
     message: String = "TestMessage",
     severity: Severity = Severity.Error,
     autoCorrectEnabled: Boolean = false,
 ): Issue = IssueImpl(
-    ruleInfo = ruleInfo,
+    ruleInstance = ruleInstance,
     entity = entity,
     message = message,
     severity = severity,
@@ -41,36 +41,36 @@ fun createIssue(
 )
 
 fun createIssue(
-    ruleInfo: Issue.RuleInfo,
+    ruleInstance: Issue.RuleInstance,
     location: Location,
     message: String = "TestMessage",
     severity: Severity = Severity.Error,
     autoCorrectEnabled: Boolean = false,
 ): Issue = IssueImpl(
-    ruleInfo = ruleInfo,
+    ruleInstance = ruleInstance,
     entity = createEntity(location = location),
     message = message,
     severity = severity,
     autoCorrectEnabled = autoCorrectEnabled,
 )
 
-fun createRuleInfo(
+fun createRuleInstance(
     id: String = "TestSmell",
     ruleSetId: String = "RuleSet$id",
     description: String = "Description $id",
-): Issue.RuleInfo = IssueImpl.RuleInfo(
+): Issue.RuleInstance = IssueImpl.RuleInstance(
     id = Rule.Id(id),
     ruleSetId = RuleSet.Id(ruleSetId),
     description = description
 )
 
 fun createIssueForRelativePath(
-    ruleInfo: Issue.RuleInfo,
+    ruleInstance: Issue.RuleInstance,
     basePath: String = "Users/tester/detekt/",
     relativePath: String = "TestFile.kt"
 ): Issue {
     return IssueImpl(
-        ruleInfo = ruleInfo,
+        ruleInstance = ruleInstance,
         entity = Entity(
             name = "TestEntity",
             signature = "TestEntitySignature",
@@ -114,16 +114,16 @@ fun createLocation(
 }
 
 private data class IssueImpl(
-    override val ruleInfo: Issue.RuleInfo,
+    override val ruleInstance: Issue.RuleInstance,
     override val entity: Entity,
     override val message: String,
     override val severity: Severity = Severity.Error,
     override val autoCorrectEnabled: Boolean = false,
     override val references: List<Entity> = emptyList(),
 ) : Issue {
-    data class RuleInfo(
+    data class RuleInstance(
         override val id: Rule.Id,
         override val ruleSetId: RuleSet.Id,
         override val description: String,
-    ) : Issue.RuleInfo
+    ) : Issue.RuleInstance
 }

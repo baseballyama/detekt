@@ -7,7 +7,7 @@ package io.gitlab.arturbosch.detekt.api
  * about the position. Entity references can also be considered for deeper characterization.
  */
 interface Issue {
-    val ruleInfo: RuleInfo
+    val ruleInstance: RuleInstance
     val entity: Entity
     val references: List<Entity>
     val message: String
@@ -17,7 +17,7 @@ interface Issue {
     val location: Location
         get() = entity.location
 
-    interface RuleInfo {
+    interface RuleInstance {
         val id: Rule.Id
         val ruleSetId: RuleSet.Id
         val description: String
