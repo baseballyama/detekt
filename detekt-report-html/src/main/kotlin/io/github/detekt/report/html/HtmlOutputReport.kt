@@ -169,11 +169,9 @@ class HtmlOutputReport : BuiltInOutputReport, OutputReport() {
             span("message") { text(issue.message) }
         }
 
-        val psiFile = issue.entity.ktElement?.containingFile
-        if (psiFile != null) {
-            val lineSequence = psiFile.text.splitToSequence('\n')
-            snippetCode(issue.ruleInfo.id, lineSequence, issue.location.source, issue.location.text.length())
-        }
+        val psiFile = issue.entity.ktElement.containingFile
+        val lineSequence = psiFile.text.splitToSequence('\n')
+        snippetCode(issue.ruleInfo.id, lineSequence, issue.location.source, issue.location.text.length())
     }
 
     private fun getComplexityMetrics(detektion: Detektion): List<String> {

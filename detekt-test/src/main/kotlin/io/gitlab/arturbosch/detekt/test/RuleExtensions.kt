@@ -65,7 +65,5 @@ fun Rule.compileAndLintWithContext(
 fun Rule.lint(ktFile: KtFile): List<Finding> = visitFile(ktFile).filterSuppressed(this)
 
 private fun List<Finding>.filterSuppressed(rule: Rule): List<Finding> {
-    return filterNot {
-        it.entity.ktElement?.isSuppressedBy(rule.ruleId, rule.aliases, RuleSet.Id("NoARuleSetId")) == true
-    }
+    return filterNot { it.entity.ktElement.isSuppressedBy(rule.ruleId, rule.aliases, RuleSet.Id("NoARuleSetId")) }
 }
