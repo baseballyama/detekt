@@ -1,3 +1,6 @@
+config:
+  validation: false
+
 comments:
   CommentOverPrivateProperty:
     active: true
@@ -204,6 +207,18 @@ style:
       #- value: 'org.junit.jupiter.api.assertTimeoutPreemptively'
       - value: 'java.util.stream.*'
         reason: "Use Kotlin's sequences instead."
+  ForbiddenImport/AtProductionCode:
+    active: true
+    imports:
+      - value: 'io.gitlab.arturbosch.detekt.api.Entity'
+        reason: 'Import Assertions.assertThat instead.'
+    excludes: ['**/test/**', '**/*Test.kt', '**/*Spec.kt']
+  ForbiddenImport/AtTestCode:
+    active: true
+    imports:
+      - value: 'io.gitlab.arturbosch.detekt.api.Entity'
+        reason: 'Import Assertions.assertThat instead.'
+    includes: ['**/test/**', '**/*Test.kt', '**/*Spec.kt']
   ForbiddenMethodCall:
     active: true
     methods:
