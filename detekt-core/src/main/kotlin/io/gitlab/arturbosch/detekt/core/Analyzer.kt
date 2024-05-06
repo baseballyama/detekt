@@ -27,6 +27,16 @@ import org.jetbrains.kotlin.resolve.BindingContext
 import org.jetbrains.kotlin.resolve.calls.smartcasts.DataFlowValueFactoryImpl
 import kotlin.reflect.full.hasAnnotation
 
+private data class RuleDescriptor(val ruleInstanceId: String, val ruleName: Rule.Name) {
+    companion object {
+        fun fromKey(key: String): RuleDescriptor? {
+            val ruleNameString = key.split("/", limit = 2).first()
+            val ruleName = runCatching { Rule.Name(ruleNameString) }.getOrNull() ?: return null
+            return RuleDescriptor(key, ruleName)
+        }
+    }
+}
+
 internal class Analyzer(
     private val settings: ProcessingSettings,
     private val providers: List<RuleSetProvider>,
@@ -96,15 +106,16 @@ internal class Analyzer(
             .flatMap { (ruleSet, ruleSetConfig) ->
                 ruleSetConfig.subConfigKeys()
                     .asSequence()
-                    .mapNotNull { runCatching { Rule.Name(it) }.getOrNull() }
-                    .mapNotNull { ruleName ->
-                        ruleSet.rules[ruleName]?.let { it to ruleSetConfig.subConfig(ruleName.value) }
+                    .mapNotNull { configKey -> RuleDescriptor.fromKey(configKey) }
+                    .mapNotNull { (ruleInstanceId, ruleName) ->
+                        ruleSet.rules[ruleName]
+                            ?.let { Triple(it, ruleSetConfig.subConfig(ruleInstanceId), ruleInstanceId) }
                     }
-                    .filter { (_, config) -> config.isActiveOrDefault(false) }
-                    .filter { (_, config) -> config.shouldAnalyzeFile(file, settings.spec.projectSpec.basePath) }
-                    .map { (ruleProvider, config) ->
+                    .filter { (_, config, _) -> config.isActiveOrDefault(false) }
+                    .filter { (_, config, _) -> config.shouldAnalyzeFile(file, settings.spec.projectSpec.basePath) }
+                    .map { (ruleProvider, config, ruleInstanceId) ->
                         val rule = ruleProvider(config)
-                        rule.toRuleInstance(rule.ruleName.value, ruleSet.id) to rule
+                        rule.toRuleInstance(ruleInstanceId, ruleSet.id) to rule
                     }
             }
             .filterNot { (ruleInstance, rule) ->
